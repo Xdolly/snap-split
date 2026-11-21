@@ -1,0 +1,14 @@
+/* Snap Split — ซ่อนแถบที่อยู่ของ Firefox เฉพาะตอนแท็บ Snap Split เปิดอยู่
+   (ส่วนขยายติดเครื่องหมายมองไม่เห็น U+2063 ไว้ที่ชื่อหน้าต่าง · แท็บอื่นแถบกลับมาเอง)
+
+   ติดตั้งครั้งเดียว:
+   1. about:config → toolkit.legacyUserProfileCustomizations.stylesheets = true
+   2. about:support → Profile Folder → Open Folder
+   3. สร้างโฟลเดอร์ชื่อ chrome (ถ้ายังไม่มี) แล้ววางไฟล์นี้ลงไป
+      (มี userChrome.css อยู่แล้ว = คัดลอกเนื้อหาด้านล่างไปต่อท้าย)
+   4. ปิด Firefox ทั้งหมดแล้วเปิดใหม่
+   ถอน: ลบบรรทัดด้านล่างออก แล้วเปิด Firefox ใหม่ */
+
+:root[titlepreface*="\2063"] #nav-bar {
+  visibility: collapse !important;
+}

@@ -1,0 +1,72 @@
+:root { --bg: #eaeaed; --fg: #15141a; --bar: #f9f9fb; --line: #d7d7db; --zone: #dcdcdc; --hi: #0061e0; --muted: #5b5b66;
+  --field: rgba(0,0,0,.05); --field-focus: #fff; --field-fg: #15141a; --icon: #3a3944; --hover: rgba(0,0,0,.08); }
+@media (prefers-color-scheme: dark) {
+  /* ค่าที่วัดจากภาพแถบจริงของ Firefox (Nova มืด) ของโก๋ 21 พ.ย. */
+  :root { --bg: rgb(25,25,25); --fg: rgb(231,225,248); --bar: rgb(39,34,54); --line: rgb(63,62,66); --zone: rgb(63,58,82); --hi: rgb(176,163,210);
+    --muted: rgb(167,162,183); --field: rgb(31,27,43); --field-focus: rgb(31,27,43); --field-fg: rgb(231,225,248); --icon: rgb(231,225,248);
+    --hover: rgba(231,225,248,.1); }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font: 13px system-ui, 'Segoe UI', sans-serif; }
+body { display: flex; flex-direction: column; }
+.bar { display: flex; align-items: center; gap: 2px; min-height: 40px; padding: 4px 6px; background: var(--bar); color: var(--fg); border-bottom: 1px solid var(--line); }
+.bar .layouts { margin: 0 6px 0 8px; }
+.layouts { display: flex; gap: 6px; }
+.mini { display: grid; gap: 2px; width: 30px; height: 20px; padding: 2px; border: 1px solid var(--line); border-radius: 4px; background: transparent; cursor: pointer; }
+.mini span { background: var(--zone); border-radius: 1px; }
+.mini.on { border-color: var(--hi); }
+.mini.on span, .mini:hover span { background: var(--hi); }
+.pfav { width: 16px; height: 16px; flex: none; }
+.pno { min-width: 18px; padding: 1px 5px; border-radius: 3px; background: var(--hi); color: #000; font-weight: 600; text-align: center; }
+.pno:empty { display: none; }
+.addr { flex: 1; min-width: 0; margin: 0 6px; display: flex; align-items: center; gap: 6px; height: 32px; padding: 0 4px 0 12px;
+  border-radius: 16px; background: var(--field); border: 1px solid transparent; color: var(--field-fg); }
+.addr:focus-within { border-color: var(--hi); background: var(--field-focus); }
+.addr .url { border: 0; background: transparent; padding: 0; outline: none; height: 100%; color: inherit; }
+.addr .url:focus { outline: none; }
+.b.in { height: 24px; width: 24px; border-radius: 12px; }
+.grid { flex: 1; min-height: 0; position: relative; overflow: hidden; }
+.pane { position: absolute; display: flex; flex-direction: column; min-width: 0; min-height: 0; border: 2px solid transparent; }
+.pane.active { border-color: var(--hi); }
+.url { flex: 1; min-width: 0; padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--field); color: inherit; font: inherit; }
+.url:focus { outline: 2px solid var(--hi); outline-offset: -1px; }
+.b { width: 32px; height: 32px; flex: none; border: 0; border-radius: 16px; background: transparent; color: var(--icon); cursor: pointer; font-size: 14px;
+  display: inline-grid; place-items: center; padding: 0; }
+.ico { width: 16px; height: 16px; display: block; }
+.ico.rot { transform: rotate(90deg); }
+.b:hover { background: var(--hover); }
+.pane-body { flex: 1; min-height: 0; position: relative; background: #fff; }
+.pane-body iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.gutter { position: absolute; background: var(--line); z-index: 2; }
+.gutter.col { cursor: col-resize; }
+.gutter.row { cursor: row-resize; }
+.gutter:hover, .gutter.drag { background: var(--hi); }
+body.dragging iframe { pointer-events: none; }
+body.dragging { user-select: none; }
+
+/* ช่องว่าง = เลือกแท็บแบบ Snap Assist */
+.chooser { position: absolute; inset: 0; overflow: auto; padding: 14px; background: var(--bg); color: var(--fg); }
+.ch-form { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; max-width: 520px; }
+.ch-form .url { flex: 1 1 180px; }
+.ch-form .url { padding: 8px 10px; }
+.chooser h2 { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.tabs { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+.tab { display: flex; gap: 8px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bar); color: inherit; font: inherit; text-align: left; cursor: pointer; min-width: 0; }
+.tab:hover, .tab:focus-visible { border-color: var(--hi); outline: none; }
+.tab img { width: 16px; height: 16px; flex: none; }
+.tab span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.empty { color: var(--muted); }
+.pane[hidden] { display: none; }
+.filebtn { min-height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--bar); color: inherit; font: inherit; cursor: pointer; white-space: nowrap; }
+.filebtn:hover { border-color: var(--hi); }
+.pane.drop { border-color: var(--hi); border-style: dashed; }
+body.dragging iframe, body.filedrag iframe { pointer-events: none; }
+.b:disabled { opacity: .45; cursor: default; background: transparent; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); padding: 8px 14px; border-radius: 6px; background: #000c; color: #fff; z-index: 10; }
+.grip { position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 3; padding: 0 12px; border-radius: 0 0 6px 6px;
+  background: var(--bar); color: var(--muted); font-size: 13px; line-height: 16px; cursor: grab; opacity: 0; transition: opacity .15s; user-select: none; }
+.pane:hover .grip, body.filedrag .grip { opacity: .9; }
+.grip:active { cursor: grabbing; }
+.pane.dragsrc { opacity: .5; }
+.pane.drop { border-color: var(--hi); border-style: dashed; }

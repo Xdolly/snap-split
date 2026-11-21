@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Snap Split</title>
+<link id="fav" rel="icon" href="icon.svg">
+<link rel="stylesheet" href="split.css">
+</head>
+<body>
+  <!-- ไอคอนแถบบน: path จากชุด Nova ของ Firefox 159 (MPL-2.0) — ต้นฉบับอยู่ใน icons/ -->
+  <!-- แถบเดียวด้านบน: ที่อยู่ + ปุ่ม เป็นของ "ช่องที่ใช้งานอยู่" (คลิกช่องไหน แถบเปลี่ยนตาม) -->
+  <!-- แถบบนแทนแถบที่อยู่ของ Firefox (userChrome.css ซ่อนของเดิมตอนอยู่แท็บนี้) — เรียงแบบ Firefox:
+       ย้อน/ไปต่อ/โหลดใหม่ · ช่องที่อยู่ของ "ช่องที่ใช้งานอยู่" · เครื่องมือแบ่งจอ -->
+  <header class="bar">
+    <button type="button" class="b" id="back" title="ย้อนกลับ (Alt+←)"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M6.055 2.219a.75.75 0 0 1 1.061 1.06L3.145 7.25H14.25a.75.75 0 0 1 0 1.5H3.147l3.97 3.969a.75.75 0 0 1-1.061 1.063L1.513 9.238A1.74 1.74 0 0 1 1 8c0-.467.182-.907.513-1.237z"/></svg></button>
+    <button type="button" class="b" id="fwd" title="ไปข้างหน้า (Alt+→)"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8.884 2.218a.75.75 0 0 1 1.061 0l4.543 4.543c.331.33.513.77.513 1.237s-.182.907-.513 1.238l-4.543 4.543a.75.75 0 0 1-.53.22V14a.751.751 0 0 1-.53-1.281L12.85 8.75H1.75a.75.75 0 0 1 0-1.5h11.105L8.884 3.28a.75.75 0 0 1 0-1.061"/></svg></button>
+    <button type="button" class="b" id="reload" title="โหลดช่องนี้ใหม่"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M7.49 2a6.48 6.48 0 0 1 4.495 1.807l1.161-1.16a.5.5 0 0 1 .854.354V6.5a.5.5 0 0 1-.5.5H10a.5.5 0 0 1-.353-.854l1.278-1.28a5 5 0 1 0 1.33 5.151.75.75 0 1 1 1.43.456A6.502 6.502 0 0 1 .99 8.5 6.5 6.5 0 0 1 7.49 2"/></svg></button>
+    <form id="addr" class="addr">
+      <img id="pfav" class="pfav" alt="">
+      <span id="pno" class="pno"></span>
+      <input id="url" class="url" type="text" spellcheck="false" placeholder="พิมพ์ที่อยู่เว็บ แล้วกด Enter">
+      <button type="button" class="b in" id="pop" title="เปิดช่องนี้เป็นแท็บปกติ"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 2.5c-1.603 0-3.081.099-4.414.253A1.24 1.24 0 0 0 2.5 3.994v8.009c0 .635.48 1.174 1.11 1.246a38.5 38.5 0 0 0 8.805-.002 1.24 1.24 0 0 0 1.085-1.241V8H15v4.006c0 1.38-1.024 2.57-2.414 2.731a40 40 0 0 1-9.148.002A2.76 2.76 0 0 1 1 12.003V3.994c0-1.38 1.024-2.57 2.414-2.731A40 40 0 0 1 8 1z"/>
+  <path d="M14.519 1a.48.48 0 0 1 .48.48v3.64a.48.48 0 0 1-.82.338l-1.287-1.29-4.61 4.612A.75.75 0 0 1 7.22 7.72l4.61-4.61-1.289-1.29A.48.48 0 0 1 10.88 1z"/></svg></button>
+    </form>
+    <div id="layouts" class="layouts" role="toolbar" aria-label="เปลี่ยนรูปแบบ"></div>
+    <button type="button" class="b" id="splitR" title="แบ่งช่องนี้ ซ้าย-ขวา (คลิกขวาในหน้าเว็บ → Snap Split ได้ทุกทิศ)"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a.75.75 0 0 1 .75.75v.269c1.598.018 3.193.103 4.773.266A2.753 2.753 0 0 1 16 5.025v5.95a2.74 2.74 0 0 1-2.455 2.737 54 54 0 0 1-4.795.281v.257a.75.75 0 0 1-1.5 0V1.75A.75.75 0 0 1 8 1M5.75 3.559a53 53 0 0 0-3.14.221A1.243 1.243 0 0 0 1.5 5.025v5.95c0 .645.486 1.18 1.132 1.248 1.034.107 2.075.174 3.118.22v1.5a54 54 0 0 1-3.272-.228A2.753 2.753 0 0 1 0 10.975v-5.95a2.74 2.74 0 0 1 2.455-2.737A53 53 0 0 1 5.75 2.06z"/></svg></button>
+    <button type="button" class="b" id="splitB" title="แบ่งช่องนี้ บน-ล่าง"><svg class="ico rot" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a.75.75 0 0 1 .75.75v.269c1.598.018 3.193.103 4.773.266A2.753 2.753 0 0 1 16 5.025v5.95a2.74 2.74 0 0 1-2.455 2.737 54 54 0 0 1-4.795.281v.257a.75.75 0 0 1-1.5 0V1.75A.75.75 0 0 1 8 1M5.75 3.559a53 53 0 0 0-3.14.221A1.243 1.243 0 0 0 1.5 5.025v5.95c0 .645.486 1.18 1.132 1.248 1.034.107 2.075.174 3.118.22v1.5a54 54 0 0 1-3.272-.228A2.753 2.753 0 0 1 0 10.975v-5.95a2.74 2.74 0 0 1 2.455-2.737A53 53 0 0 1 5.75 2.06z"/></svg></button>
+    <button type="button" class="b" id="close" title="ปิดช่องนี้"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M12.22 2.72a.75.75 0 1 1 1.06 1.06L9.06 8l4.22 4.22a.75.75 0 1 1-1.06 1.06L8 9.06l-4.22 4.22a.75.75 0 1 1-1.06-1.06L6.94 8 2.72 3.78a.75.75 0 1 1 1.06-1.06L8 6.94z"/></svg></button>
+  </header>
+  <main id="grid" class="grid"></main>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="layouts.js"></script>
+  <script src="split.js"></script>
+</body>
+</html>
