@@ -9,6 +9,7 @@ const G = 6;            // ความกว้างร่องลาก px
 const panes = new Map();         // เลขช่อง → ช่อง
 const gutters = new Map();       // กิ่ง → ร่องลาก
 const rects = new WeakMap();     // กิ่ง → ตำแหน่ง (สัดส่วนของกล่อง)
+applyI18n();
 let state = readHash();
 let myTabId = null;
 
@@ -66,7 +67,7 @@ const bar = document.getElementById('layouts');
 LAYOUTS.forEach((l) => {
   const b = document.createElement('button');
   b.className = 'mini';
-  b.title = l.name;
+  b.title = T(l.name);
   b.dataset.id = l.id;
   b.style.gridTemplateColumns = l.cols.map((c) => c + 'fr').join(' ');
   b.style.gridTemplateRows = l.rows.map((r) => r + 'fr').join(' ');
@@ -91,7 +92,7 @@ function applyPreset(id) {
 
 // ── แบ่ง / ปิดช่อง ──
 function splitPane(id, dir, url = '') {
-  if (leaves(state.tree).length >= MAX) { toast(`แบ่งได้สูงสุด ${MAX} ช่อง`); return false; }
+  if (leaves(state.tree).length >= MAX) { toast(T('maxPanes', MAX)); return false; }
   if (!leaves(state.tree).includes(id)) id = state.a;
   const nid = state.next++;
   const first = dir === 'left' || dir === 'top';
@@ -133,7 +134,7 @@ function refreshChrome() {
   if (!p) return;
   const url = state.u[p.id] || '';
   const local = /^blob:/.test(url);
-  if (document.activeElement !== urlIn) urlIn.value = local ? '📄 ' + (p.file || 'ไฟล์ในเครื่อง') : url;
+  if (document.activeElement !== urlIn) urlIn.value = local ? '📄 ' + (p.file || T('localFile')) : url;
   document.getElementById('back').disabled = !p.back.length;
   document.getElementById('fwd').disabled = !p.fwd.length;
   const ids = leaves(state.tree);
@@ -173,7 +174,7 @@ setInterval(() => peek(active()), 3000);
 function normalize(v) {
   v = v.trim();
   if (!v) return '';
-  if (/^file:/i.test(v) || /^[a-z]:\\/i.test(v)) { toast('Firefox ไม่ให้เปิด file:/// — ใช้ปุ่ม "เปิดไฟล์ในเครื่อง…" หรือลากไฟล์มาวางในช่อง'); return ''; }
+  if (/^file:/i.test(v) || /^[a-z]:\\/i.test(v)) { toast(T('fileBlocked')); return ''; }
   if (/^[a-z]+:\/\//i.test(v)) return v;
   return /\s/.test(v) || !/\./.test(v) ? 'https://www.google.com/search?q=' + encodeURIComponent(v) : 'https://' + v;
 }
@@ -280,7 +281,7 @@ function makePane(id) {
   grip.className = 'grip';
   grip.draggable = true;
   grip.textContent = '⠿';
-  grip.title = 'ลากไปวางบนช่องอื่นเพื่อสลับที่';
+  grip.title = T('grip');
   grip.addEventListener('dragstart', (e) => {
     e.dataTransfer.setData(PANE_MIME, String(id));
     e.dataTransfer.effectAllowed = 'move';
@@ -295,8 +296,47 @@ function makePane(id) {
   return { id, el, body, frame: null, title: '', icon: '', file: '', back: [], fwd: [], expect: '' };
 }
 
+// เว็บที่ Firefox ห้ามส่วนขยายทุกตัวแตะ (extensions.webextensions.restrictedDomains ของ Firefox 159)
+// ถอดตัวกันหน้าซ้อนไม่ได้ → ในช่องจะขึ้น "Firefox Can't Open This Page" · แสดงคำอธิบาย + ปุ่มเปิดเป็นแท็บแทน
+const RESTRICTED = ['accounts-static.cdn.mozilla.net', 'accounts.firefox.com', 'addons.cdn.mozilla.net', 'addons.mozilla.org',
+  'api.accounts.firefox.com', 'content.cdn.mozilla.net', 'discovery.addons.mozilla.org', 'oauth.accounts.firefox.com',
+  'profile.accounts.firefox.com', 'support.mozilla.org', 'sync.services.mozilla.com'];
+const isRestricted = (u) => { try { return RESTRICTED.includes(new URL(u).hostname); } catch (e) { return false; } };
+
+function showBlocked(p, url) {
+  const box = document.createElement('div');
+  box.className = 'chooser blocked';
+  const h = document.createElement('h2');
+  h.textContent = T('blockedTitle');
+  const d = document.createElement('p');
+  d.textContent = T('blockedBody', host(url));
+  const row = document.createElement('div');
+  row.className = 'blk-row';
+  const open = document.createElement('button');
+  open.type = 'button';
+  open.className = 'filebtn primary';
+  open.textContent = T('openAsTab');
+  open.addEventListener('click', () => browser.tabs.create({ url }));
+  const other = document.createElement('button');
+  other.type = 'button';
+  other.className = 'filebtn';
+  other.textContent = T('pickOther');
+  other.addEventListener('click', () => setUrl(p.id, ''));
+  row.append(open, other);
+  box.append(h, d, row);
+  p.body.appendChild(box);
+}
+
 function fill(p) {
   const url = state.u[p.id] || '';
+  p.body.querySelector('.chooser.blocked')?.remove();
+  if (url && isRestricted(url)) {
+    p.body.querySelector('.chooser')?.remove();
+    p.frame?.remove();
+    p.frame = null;
+    showBlocked(p, url);
+    return;
+  }
   if (url) {
     p.body.querySelector('.chooser')?.remove();
     if (!p.frame) {
@@ -321,12 +361,12 @@ async function showChooser(p) {
   f.className = 'ch-form';
   const inp = document.createElement('input');
   inp.className = 'url';
-  inp.placeholder = 'พิมพ์ที่อยู่เว็บ แล้วกด Enter';
+  inp.placeholder = T('urlPh');
   inp.spellcheck = false;
   const fb = document.createElement('button');
   fb.type = 'button';
   fb.className = 'filebtn';
-  fb.textContent = '📂 เปิดไฟล์ในเครื่อง…';
+  fb.textContent = T('openFile');
   const fi = document.createElement('input');
   fi.type = 'file';
   fi.hidden = true;
@@ -335,13 +375,13 @@ async function showChooser(p) {
   f.append(inp, fb, fi);
   f.addEventListener('submit', (e) => { e.preventDefault(); const v = normalize(inp.value); if (v) setUrl(p.id, v); });
   const h = document.createElement('h2');
-  h.textContent = 'หรือเลือกแท็บที่จะวางในช่องนี้ · ลากไฟล์มาวางก็ได้';
+  h.textContent = T('chooserHint');
   const list = document.createElement('div');
   list.className = 'tabs';
   box.append(f, h, list);
   p.body.appendChild(box);
   const tabs = (await browser.tabs.query({ currentWindow: true })).filter((t) => isWebUrl(t.url));
-  if (!tabs.length) { const e = document.createElement('p'); e.className = 'empty'; e.textContent = 'ไม่มีแท็บเว็บอื่นในหน้าต่างนี้'; list.appendChild(e); }
+  if (!tabs.length) { const e = document.createElement('p'); e.className = 'empty'; e.textContent = T('noTabs'); list.appendChild(e); }
   for (const t of tabs) {
     const b = document.createElement('button');
     b.className = 'tab';
@@ -449,7 +489,12 @@ function paneByFrame(frameId) {
   }
   return null;
 }
-browser.webNavigation.onCommitted.addListener((d) => {
+// เว็บแบบแอปหน้าเดียว (MWP, Gmail ฯลฯ) เปลี่ยนเมนูด้วย history.pushState ไม่โหลดหน้าใหม่ →
+// onCommitted ไม่ยิง ต้องฟัง onHistoryStateUpdated ด้วย (โก๋เจอ 23 พ.ย.: เปลี่ยนเมนู แถบที่อยู่ไม่ตาม)
+browser.webNavigation.onHistoryStateUpdated.addListener((d) => onFrameNav(d));
+browser.webNavigation.onReferenceFragmentUpdated.addListener((d) => onFrameNav(d));
+browser.webNavigation.onCommitted.addListener((d) => onFrameNav(d));
+function onFrameNav(d) {
   if (d.tabId !== myTabId || d.parentFrameId !== 0) return;
   const p = paneByFrame(d.frameId);
   if (!p) return;
@@ -457,11 +502,14 @@ browser.webNavigation.onCommitted.addListener((d) => {
   if (p.expect) p.expect = '';     // หน้าที่เราสั่งโหลดเอง (รวมที่เว็บพาเด้งต่อ) ไม่นับเป็นก้าวใหม่
   else if (!redirect && d.url !== state.u[p.id]) { p.back.push({ u: state.u[p.id] || '', f: p.file }); p.fwd = []; p.file = ''; }
   state.u[p.id] = d.url;
+  // กดลิงก์ในช่องไปเว็บของ Mozilla → แสดงคำอธิบายแทนหน้า error
+  if (isRestricted(d.url)) { save(); fill(p); if (p === active()) refreshChrome(); return; }
   p.frame.dataset.src = d.url;
   p.icon = '';
   save();
   if (p === active()) refreshChrome();
-});
+  peek(p);
+}
 
 // ── คำสั่งจากเมนูไอคอน / เมนูคลิกขวา ──
 browser.runtime.onMessage.addListener((m) => {

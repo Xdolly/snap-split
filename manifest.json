@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Snap Split",
-  "version": "0.8.1",
-  "description": "แบ่งหน้า Firefox หลายช่องในแท็บเดียว เลือกรูปแบบแบบ Windows 11 (Win+Z)",
+  "name": "__MSG_extName__",
+  "version": "0.9.0",
+  "description": "__MSG_extDesc__",
   "browser_specific_settings": {
     "gecko": {
       "id": "snap-split@xdolly.local",
@@ -32,7 +32,7 @@
   },
   "browser_action": {
     "default_icon": "icon.svg",
-    "default_title": "Snap Split — เลือกรูปแบบแบ่งหน้า",
+    "default_title": "__MSG_actionTitle__",
     "default_popup": "popup.html"
   },
   "commands": {
@@ -40,11 +40,12 @@
       "suggested_key": {
         "default": "Alt+Shift+Z"
       },
-      "description": "เปิดเมนูเลือกรูปแบบ"
+      "description": "__MSG_cmdOpen__"
     }
   },
   "icons": {
     "48": "icon.svg",
     "96": "icon.svg"
-  }
+  },
+  "default_locale": "en"
 }

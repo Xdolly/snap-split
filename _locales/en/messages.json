@@ -1,0 +1,140 @@
+{
+  "extName": {
+    "message": "Snap Split"
+  },
+  "extDesc": {
+    "message": "Split Firefox into several panes inside one tab — pick a layout like Windows 11 Snap (Win+Z)."
+  },
+  "actionTitle": {
+    "message": "Snap Split — choose a layout"
+  },
+  "cmdOpen": {
+    "message": "Open the layout picker"
+  },
+  "menuSplitLeft": {
+    "message": "Split left"
+  },
+  "menuSplitRight": {
+    "message": "Split right"
+  },
+  "menuSplitTop": {
+    "message": "Split top"
+  },
+  "menuSplitBottom": {
+    "message": "Split bottom"
+  },
+  "menuClose": {
+    "message": "Close this pane"
+  },
+  "menuSend": {
+    "message": "Send to Snap Split"
+  },
+  "menuPlaceLeft": {
+    "message": "Place on the left"
+  },
+  "menuPlaceRight": {
+    "message": "Place on the right"
+  },
+  "menuPlaceTop": {
+    "message": "Place on top"
+  },
+  "menuPlaceBottom": {
+    "message": "Place at the bottom"
+  },
+  "moveTabs": {
+    "message": "Move tabs in (close the originals)"
+  },
+  "layout_h2": {
+    "message": "Two equal columns"
+  },
+  "layout_h2w": {
+    "message": "Wide left, narrow right"
+  },
+  "layout_h3": {
+    "message": "Three equal columns"
+  },
+  "layout_h3c": {
+    "message": "Three columns, wide center"
+  },
+  "layout_l1r2": {
+    "message": "Large left, two stacked right"
+  },
+  "layout_q4": {
+    "message": "Four panes (2×2)"
+  },
+  "zoneAria": {
+    "message": "$1 — pane $2"
+  },
+  "hintPicked": {
+    "message": "Layout $1 — press a pane number 1–$2"
+  },
+  "hintAlready": {
+    "message": "This tab is already split — pick a new layout"
+  },
+  "hintMulti": {
+    "message": "$1 tabs selected — click the pane for this tab"
+  },
+  "hintSingle": {
+    "message": "Click the pane for this tab · fill the other panes later (Ctrl+click tabs first to add several at once)"
+  },
+  "back": {
+    "message": "Back (Alt+←)"
+  },
+  "forward": {
+    "message": "Forward (Alt+→)"
+  },
+  "reload": {
+    "message": "Reload this pane"
+  },
+  "urlPh": {
+    "message": "Type a web address and press Enter"
+  },
+  "popOut": {
+    "message": "Open this pane as a normal tab"
+  },
+  "layoutsAria": {
+    "message": "Change layout"
+  },
+  "splitRight": {
+    "message": "Split this pane left/right (right-click inside a page → Snap Split for any side)"
+  },
+  "splitBottom": {
+    "message": "Split this pane top/bottom"
+  },
+  "closePane": {
+    "message": "Close this pane"
+  },
+  "maxPanes": {
+    "message": "You can split into at most $1 panes"
+  },
+  "localFile": {
+    "message": "Local file"
+  },
+  "fileBlocked": {
+    "message": "Firefox doesn't allow opening file:/// here — use “Open local file…” or drag the file into a pane"
+  },
+  "grip": {
+    "message": "Drag onto another pane to swap"
+  },
+  "blockedTitle": {
+    "message": "Firefox doesn't allow this site in a split pane"
+  },
+  "blockedBody": {
+    "message": "$1 is a Mozilla site (add-ons store / Firefox account). Firefox protects it, so no extension can show it inside another page — open it as a normal tab."
+  },
+  "openAsTab": {
+    "message": "Open as tab"
+  },
+  "pickOther": {
+    "message": "Choose another site"
+  },
+  "openFile": {
+    "message": "📂 Open local file…"
+  },
+  "chooserHint": {
+    "message": "Or pick a tab for this pane · you can also drop a file here"
+  },
+  "noTabs": {
+    "message": "No other web tabs in this window"
+  }
+}

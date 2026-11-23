@@ -26,16 +26,17 @@ browser.webRequest.onHeadersReceived.addListener(
 // ในหน้าเว็บของช่อง: Snap Split ▸ แบ่งซ้าย/ขวา/บน/ล่าง · ปิดช่องนี้ (โชว์เฉพาะในหน้าแบ่งจอ)
 // ที่แท็บปกติด้านบน: ส่งเข้า Snap Split ▸ ซ้าย/ขวา/บน/ล่าง (เข้าหน้าแบ่งจอที่ใช้ล่าสุดในหน้าต่างนั้น ไม่มี = สร้างใหม่)
 const SPLIT = browser.runtime.getURL('split.html');
-const DIRS = [['left', 'ซ้าย'], ['right', 'ขวา'], ['top', 'บน'], ['bottom', 'ล่าง']];
+const DIRS = [['left', 'Left'], ['right', 'Right'], ['top', 'Top'], ['bottom', 'Bottom']];
+const T = (k) => browser.i18n.getMessage(k) || k;
 const isWeb = (u) => /^https?:\/\//i.test(u || '');
 
 browser.menus.removeAll().then(() => {
   browser.menus.create({ id: 'ss', title: 'Snap Split', contexts: ['all'], visible: false });
-  for (const [d, t] of DIRS) browser.menus.create({ id: 'ss-' + d, parentId: 'ss', title: 'แบ่ง' + t, contexts: ['all'] });
+  for (const [d, t] of DIRS) browser.menus.create({ id: 'ss-' + d, parentId: 'ss', title: T('menuSplit' + t), contexts: ['all'] });
   browser.menus.create({ id: 'ss-sep', parentId: 'ss', type: 'separator', contexts: ['all'] });
-  browser.menus.create({ id: 'ss-close', parentId: 'ss', title: 'ปิดช่องนี้', contexts: ['all'] });
-  browser.menus.create({ id: 'st', title: 'ส่งเข้า Snap Split', contexts: ['tab'] });
-  for (const [d, t] of DIRS) browser.menus.create({ id: 'st-' + d, parentId: 'st', title: 'วางด้าน' + t, contexts: ['tab'] });
+  browser.menus.create({ id: 'ss-close', parentId: 'ss', title: T('menuClose'), contexts: ['all'] });
+  browser.menus.create({ id: 'st', title: T('menuSend'), contexts: ['tab'] });
+  for (const [d, t] of DIRS) browser.menus.create({ id: 'st-' + d, parentId: 'st', title: T('menuPlace' + t), contexts: ['tab'] });
 });
 
 browser.menus.onShown.addListener(async (info, tab) => {

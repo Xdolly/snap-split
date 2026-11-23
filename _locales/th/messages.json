@@ -1,0 +1,140 @@
+{
+  "extName": {
+    "message": "Snap Split"
+  },
+  "extDesc": {
+    "message": "แบ่งหน้า Firefox หลายช่องในแท็บเดียว เลือกรูปแบบแบบ Windows 11 (Win+Z)"
+  },
+  "actionTitle": {
+    "message": "Snap Split — เลือกรูปแบบแบ่งหน้า"
+  },
+  "cmdOpen": {
+    "message": "เปิดเมนูเลือกรูปแบบ"
+  },
+  "menuSplitLeft": {
+    "message": "แบ่งซ้าย"
+  },
+  "menuSplitRight": {
+    "message": "แบ่งขวา"
+  },
+  "menuSplitTop": {
+    "message": "แบ่งบน"
+  },
+  "menuSplitBottom": {
+    "message": "แบ่งล่าง"
+  },
+  "menuClose": {
+    "message": "ปิดช่องนี้"
+  },
+  "menuSend": {
+    "message": "ส่งเข้า Snap Split"
+  },
+  "menuPlaceLeft": {
+    "message": "วางด้านซ้าย"
+  },
+  "menuPlaceRight": {
+    "message": "วางด้านขวา"
+  },
+  "menuPlaceTop": {
+    "message": "วางด้านบน"
+  },
+  "menuPlaceBottom": {
+    "message": "วางด้านล่าง"
+  },
+  "moveTabs": {
+    "message": "ย้ายแท็บเข้าไป (ปิดแท็บเดิม)"
+  },
+  "layout_h2": {
+    "message": "ซ้าย-ขวา เท่ากัน"
+  },
+  "layout_h2w": {
+    "message": "ซ้ายกว้าง ขวาแคบ"
+  },
+  "layout_h3": {
+    "message": "3 ช่องเท่ากัน"
+  },
+  "layout_h3c": {
+    "message": "3 ช่อง กลางกว้าง"
+  },
+  "layout_l1r2": {
+    "message": "ซ้ายใหญ่ ขวาบน-ล่าง"
+  },
+  "layout_q4": {
+    "message": "4 ช่อง (2×2)"
+  },
+  "zoneAria": {
+    "message": "$1 ช่อง $2"
+  },
+  "hintPicked": {
+    "message": "รูปแบบ $1 — กดเลขช่อง 1–$2"
+  },
+  "hintAlready": {
+    "message": "หน้านี้แบ่งจออยู่แล้ว — เลือกรูปแบบใหม่ได้เลย"
+  },
+  "hintMulti": {
+    "message": "เลือกไว้ $1 แท็บ — คลิกช่องที่จะวางแท็บนี้"
+  },
+  "hintSingle": {
+    "message": "คลิกช่องที่จะวางแท็บนี้ · ช่องที่เหลือเลือกแท็บได้ทีหลัง (Ctrl+คลิกแท็บก่อน เพื่อใส่หลายแท็บทีเดียว)"
+  },
+  "back": {
+    "message": "ย้อนกลับ (Alt+←)"
+  },
+  "forward": {
+    "message": "ไปข้างหน้า (Alt+→)"
+  },
+  "reload": {
+    "message": "โหลดช่องนี้ใหม่"
+  },
+  "urlPh": {
+    "message": "พิมพ์ที่อยู่เว็บ แล้วกด Enter"
+  },
+  "popOut": {
+    "message": "เปิดช่องนี้เป็นแท็บปกติ"
+  },
+  "layoutsAria": {
+    "message": "เปลี่ยนรูปแบบ"
+  },
+  "splitRight": {
+    "message": "แบ่งช่องนี้ ซ้าย-ขวา (คลิกขวาในหน้าเว็บ → Snap Split ได้ทุกทิศ)"
+  },
+  "splitBottom": {
+    "message": "แบ่งช่องนี้ บน-ล่าง"
+  },
+  "closePane": {
+    "message": "ปิดช่องนี้"
+  },
+  "maxPanes": {
+    "message": "แบ่งได้สูงสุด $1 ช่อง"
+  },
+  "localFile": {
+    "message": "ไฟล์ในเครื่อง"
+  },
+  "fileBlocked": {
+    "message": "Firefox ไม่ให้เปิด file:/// — ใช้ปุ่ม \"เปิดไฟล์ในเครื่อง…\" หรือลากไฟล์มาวางในช่อง"
+  },
+  "grip": {
+    "message": "ลากไปวางบนช่องอื่นเพื่อสลับที่"
+  },
+  "blockedTitle": {
+    "message": "Firefox ไม่ให้เปิดเว็บนี้ในช่องแบ่งจอ"
+  },
+  "blockedBody": {
+    "message": "$1 เป็นเว็บของ Mozilla (ร้านส่วนขยาย / บัญชี Firefox) — Firefox กันไว้ ส่วนขยายทุกตัวเปิดซ้อนในหน้าอื่นไม่ได้ ต้องเปิดเป็นแท็บปกติ"
+  },
+  "openAsTab": {
+    "message": "เปิดเป็นแท็บ"
+  },
+  "pickOther": {
+    "message": "เลือกเว็บอื่น"
+  },
+  "openFile": {
+    "message": "📂 เปิดไฟล์ในเครื่อง…"
+  },
+  "chooserHint": {
+    "message": "หรือเลือกแท็บที่จะวางในช่องนี้ · ลากไฟล์มาวางก็ได้"
+  },
+  "noTabs": {
+    "message": "ไม่มีแท็บเว็บอื่นในหน้าต่างนี้"
+  }
+}
