@@ -136,5 +136,14 @@
   },
   "noTabs": {
     "message": "No other web tabs in this window"
+  },
+  "bookmarks": {
+    "message": "Bookmarks Toolbar — opens in the active pane"
+  },
+  "bmEmpty": {
+    "message": "The Bookmarks Toolbar is empty"
+  },
+  "bmRoot": {
+    "message": "Bookmarks Toolbar"
   }
 }

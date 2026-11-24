@@ -73,8 +73,86 @@ LAYOUTS.forEach((l) => {
   b.style.gridTemplateRows = l.rows.map((r) => r + 'fr').join(' ');
   b.style.gridTemplateAreas = simpleAreas(l);
   for (let z = 0; z < zoneCount(l); z++) { const s = document.createElement('span'); s.style.gridArea = 'z' + z; b.appendChild(s); }
-  b.addEventListener('click', () => applyPreset(l.id));
+  b.addEventListener('click', () => { applyPreset(l.id); closeMenus(); });
   bar.appendChild(b);
+});
+
+// ── กล่องที่กางจากแถบบน ──
+// คลิกในช่องเว็บไม่ส่ง click มาที่หน้านี้ (อยู่ใน iframe) → หน้านี้เสียโฟกัส (blur) = ปิดกล่องด้วย
+const MENUS = [['layoutBtn', 'layoutMenu'], ['bmBtn', 'bmMenu']];
+function closeMenus() {
+  for (const [b, m] of MENUS) { document.getElementById(m).hidden = true; document.getElementById(b).setAttribute('aria-expanded', 'false'); }
+}
+function toggleMenu(btnId, menuId) {
+  const m = document.getElementById(menuId);
+  const open = m.hidden;
+  closeMenus();
+  if (!open) return false;
+  m.hidden = false;
+  document.getElementById(btnId).setAttribute('aria-expanded', 'true');
+  return true;
+}
+// ใช้เส้นทางตอนกด (composedPath) ไม่ใช่ closest — กดโฟลเดอร์แล้วรายการถูกสร้างใหม่ ตัวที่กดหลุดจากหน้า
+// closest จะหา .dd ไม่เจอแล้วปิดกล่องทิ้ง (เจอตอนทดสอบ 24 พ.ย.)
+document.addEventListener('click', (e) => { if (!e.composedPath().some((n) => n.classList && n.classList.contains('dd'))) closeMenus(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenus(); });
+window.addEventListener('blur', closeMenus);
+document.getElementById('layoutBtn').addEventListener('click', () => toggleMenu('layoutBtn', 'layoutMenu'));
+
+/** ปุ่มรูปแบบโชว์รูปย่อของแบบที่ใช้อยู่ · แบ่งเองจนไม่ตรงแบบไหน = รูป 4 ช่องจาง ๆ */
+function drawLayoutBtn() {
+  const btn = document.getElementById('layoutBtn');
+  const cur = state.l && LAYOUTS.find((l) => l.id === state.l);
+  const src = bar.querySelector(`.mini[data-id="${cur ? cur.id : 'q4'}"]`);
+  btn.replaceChildren(src.cloneNode(true));
+  btn.firstChild.classList.remove('on');
+  btn.firstChild.style.opacity = cur ? '' : '.5';
+}
+
+// ── บุ๊กมาร์ก (แถบบุ๊กมาร์กของ Firefox) → เปิดในช่องที่ใช้งานอยู่ ──
+const BM_ROOT = 'toolbar_____';
+const FOLDER_ICO = '<svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1.5 3.5A1.5 1.5 0 0 1 3 2h3.2c.4 0 .78.16 1.06.44L8.6 3.8H13a1.5 1.5 0 0 1 1.5 1.5v6.2A1.5 1.5 0 0 1 13 13H3a1.5 1.5 0 0 1-1.5-1.5z"/></svg>';
+// ไอคอนเว็บดึงจากเว็บนั้นเอง (เหมือนแถบบน) — ไม่ส่งรายชื่อบุ๊กมาร์กไปบริการไอคอนของคนอื่น
+const favUrl = (u) => { try { return new URL('/favicon.ico', u).href; } catch (e) { return ''; } };
+async function showBookmarks(folderId, title, trail) {
+  const menu = document.getElementById('bmMenu');
+  let items = [];
+  try { items = await browser.bookmarks.getChildren(folderId); } catch (e) { items = []; }
+  menu.replaceChildren();
+  const row = (html, fn, cls = '') => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'bm-row ' + cls; b.innerHTML = html;
+    b.addEventListener('click', fn);
+    menu.appendChild(b);
+    return b;
+  };
+  if (trail.length) {
+    const up = trail[trail.length - 1];
+    row('<span></span>', () => showBookmarks(up.id, up.title, trail.slice(0, -1)), 'back').firstChild.textContent = '‹ ' + up.title;
+  }
+  for (const it of items) {
+    if (it.type === 'separator') { const d = document.createElement('div'); d.className = 'bm-sep'; menu.appendChild(d); continue; }
+    if (it.type === 'folder') {
+      const r = row(FOLDER_ICO + '<span></span>', () => showBookmarks(it.id, it.title, [...trail, { id: folderId, title }]));
+      r.lastChild.textContent = it.title || '—';
+      continue;
+    }
+    if (!isWebUrl(it.url)) continue;   // place: / javascript: เปิดในช่องไม่ได้
+    const r = row('<img alt=""><span></span>', () => {
+      closeMenus();
+      setUrl(active().id, it.url);
+    });
+    r.title = it.url;
+    r.firstChild.src = favUrl(it.url);
+    r.firstChild.addEventListener('error', () => { r.firstChild.style.visibility = 'hidden'; });
+    r.lastChild.textContent = it.title || host(it.url);
+  }
+  if (!menu.querySelector('.bm-row:not(.back), .bm-sep')) {
+    const d = document.createElement('div'); d.className = 'bm-empty'; d.textContent = T('bmEmpty'); menu.appendChild(d);
+  }
+}
+document.getElementById('bmBtn').addEventListener('click', () => {
+  if (toggleMenu('bmBtn', 'bmMenu')) showBookmarks(BM_ROOT, T('bmRoot'), []);
 });
 
 /** เปลี่ยนเป็นรูปแบบสำเร็จรูป — ช่องเดิมเรียงลงตามลำดับ ช่องเกินพักไว้ (ไม่ทิ้ง เปลี่ยนกลับได้) */
@@ -405,6 +483,7 @@ function render() {
   for (const [id, p] of panes) p.el.hidden = !ids.includes(id);
   placeAll();
   bar.querySelectorAll('.mini').forEach((b) => b.classList.toggle('on', b.dataset.id === state.l));
+  drawLayoutBtn();
   document.getElementById('splitR').disabled = document.getElementById('splitB').disabled = ids.length >= MAX;
   setActive(state.a);
 }
@@ -489,7 +568,7 @@ function paneByFrame(frameId) {
   }
   return null;
 }
-// เว็บแบบแอปหน้าเดียว (MWP, Gmail ฯลฯ) เปลี่ยนเมนูด้วย history.pushState ไม่โหลดหน้าใหม่ →
+// เว็บแบบแอปหน้าเดียว (Gmail ฯลฯ) เปลี่ยนเมนูด้วย history.pushState ไม่โหลดหน้าใหม่ →
 // onCommitted ไม่ยิง ต้องฟัง onHistoryStateUpdated ด้วย (โก๋เจอ 23 พ.ย.: เปลี่ยนเมนู แถบที่อยู่ไม่ตาม)
 browser.webNavigation.onHistoryStateUpdated.addListener((d) => onFrameNav(d));
 browser.webNavigation.onReferenceFragmentUpdated.addListener((d) => onFrameNav(d));

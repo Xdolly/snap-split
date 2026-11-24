@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extName__",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "__MSG_extDesc__",
   "browser_specific_settings": {
     "gecko": {
@@ -15,6 +15,7 @@
     }
   },
   "permissions": [
+    "bookmarks",
     "tabs",
     "tabGroups",
     "menus",

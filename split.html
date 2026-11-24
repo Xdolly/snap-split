@@ -22,7 +22,18 @@
       <button type="button" class="b in" id="pop" data-i18n-title="popOut"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 2.5c-1.603 0-3.081.099-4.414.253A1.24 1.24 0 0 0 2.5 3.994v8.009c0 .635.48 1.174 1.11 1.246a38.5 38.5 0 0 0 8.805-.002 1.24 1.24 0 0 0 1.085-1.241V8H15v4.006c0 1.38-1.024 2.57-2.414 2.731a40 40 0 0 1-9.148.002A2.76 2.76 0 0 1 1 12.003V3.994c0-1.38 1.024-2.57 2.414-2.731A40 40 0 0 1 8 1z"/>
   <path d="M14.519 1a.48.48 0 0 1 .48.48v3.64a.48.48 0 0 1-.82.338l-1.287-1.29-4.61 4.612A.75.75 0 0 1 7.22 7.72l4.61-4.61-1.289-1.29A.48.48 0 0 1 10.88 1z"/></svg></button>
     </form>
-    <div id="layouts" class="layouts" role="toolbar" data-i18n-aria="layoutsAria"></div>
+    <!-- บุ๊กมาร์ก: แถบบุ๊กมาร์กของ Firefox ย่อเป็นปุ่มเดียว · เลือกแล้วเปิดใน "ช่องที่ใช้งานอยู่" (โก๋ขอ 24 พ.ย.) -->
+    <div class="dd">
+      <button type="button" class="b" id="bmBtn" data-i18n-title="bookmarks" aria-haspopup="true" aria-expanded="false"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.8l1.85 3.85 4.2.55-3.07 2.92.78 4.18L8 11.25 4.24 13.3l.78-4.18L1.95 6.2l4.2-.55z"/></svg></button>
+      <div id="bmMenu" class="menu bm" hidden></div>
+    </div>
+    <!-- รูปแบบแบ่งจอ: เก็บไว้ในกล่อง ปุ่มโชว์รูปแบบที่ใช้อยู่ · คลิกแล้วกางทั้ง 6 แบบให้เลือก (โก๋ขอ 24 พ.ย.) -->
+    <div class="dd">
+      <button type="button" class="b lbtn" id="layoutBtn" data-i18n-title="layoutsAria" aria-haspopup="true" aria-expanded="false"></button>
+      <div id="layoutMenu" class="menu" hidden>
+        <div id="layouts" class="layouts" role="toolbar" data-i18n-aria="layoutsAria"></div>
+      </div>
+    </div>
     <button type="button" class="b" id="splitR" data-i18n-title="splitRight"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a.75.75 0 0 1 .75.75v.269c1.598.018 3.193.103 4.773.266A2.753 2.753 0 0 1 16 5.025v5.95a2.74 2.74 0 0 1-2.455 2.737 54 54 0 0 1-4.795.281v.257a.75.75 0 0 1-1.5 0V1.75A.75.75 0 0 1 8 1M5.75 3.559a53 53 0 0 0-3.14.221A1.243 1.243 0 0 0 1.5 5.025v5.95c0 .645.486 1.18 1.132 1.248 1.034.107 2.075.174 3.118.22v1.5a54 54 0 0 1-3.272-.228A2.753 2.753 0 0 1 0 10.975v-5.95a2.74 2.74 0 0 1 2.455-2.737A53 53 0 0 1 5.75 2.06z"/></svg></button>
     <button type="button" class="b" id="splitB" data-i18n-title="splitBottom"><svg class="ico rot" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a.75.75 0 0 1 .75.75v.269c1.598.018 3.193.103 4.773.266A2.753 2.753 0 0 1 16 5.025v5.95a2.74 2.74 0 0 1-2.455 2.737 54 54 0 0 1-4.795.281v.257a.75.75 0 0 1-1.5 0V1.75A.75.75 0 0 1 8 1M5.75 3.559a53 53 0 0 0-3.14.221A1.243 1.243 0 0 0 1.5 5.025v5.95c0 .645.486 1.18 1.132 1.248 1.034.107 2.075.174 3.118.22v1.5a54 54 0 0 1-3.272-.228A2.753 2.753 0 0 1 0 10.975v-5.95a2.74 2.74 0 0 1 2.455-2.737A53 53 0 0 1 5.75 2.06z"/></svg></button>
     <button type="button" class="b" id="close" data-i18n-title="closePane"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M12.22 2.72a.75.75 0 1 1 1.06 1.06L9.06 8l4.22 4.22a.75.75 0 1 1-1.06 1.06L8 9.06l-4.22 4.22a.75.75 0 1 1-1.06-1.06L6.94 8 2.72 3.78a.75.75 0 1 1 1.06-1.06L8 6.94z"/></svg></button>
