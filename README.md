@@ -32,7 +32,17 @@ Snap Split removes those two headers **only** for frames that sit directly insid
 
 ### Optional: hide Firefox's own address bar on split tabs
 
-`userChrome/userChrome.css` hides Firefox's navigation bar while a Snap Split tab is active. Snap Split's own bar then takes its place. Setup steps are in the comments at the top of that file.
+Without this, a split tab shows two address bars: Firefox's own bar and Snap Split's bar. [`userChrome/userChrome.css`](userChrome/userChrome.css) hides Firefox's navigation bar **only while a Snap Split tab is active**. Switch to a normal tab and the bar comes back.
+
+How it works: Snap Split adds an invisible character (U+2063) to the window title, and the CSS reacts to it.
+
+1. Open `about:config` and set `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`.
+2. Open `about:support`. Under *Profile Folder*, click **Open Folder**.
+3. In that folder, create a folder named `chrome` if there isn't one already.
+4. Copy `userChrome.css` into the `chrome` folder. If a `userChrome.css` is already there, add the lines from ours to the end of it.
+5. Close every Firefox window, then start Firefox again.
+
+To undo: delete those lines (or the file) and restart Firefox.
 
 ## Permissions
 
@@ -75,6 +85,17 @@ Snap Split collects no data and sends nothing anywhere.
 **ติดตั้ง**
 - **ลองใช้:** `about:debugging` → *This Firefox* → *Load Temporary Add-on…* → เลือก `manifest.json` (หายเมื่อปิด Firefox)
 - **ติดตั้งถาวร:** ต้องให้ Mozilla เซ็นก่อน โดยอัปโหลดแบบ *unlisted* บน addons.mozilla.org และเปลี่ยน `gecko.id` เป็นของตัวเอง
-- **ซ่อนแถบที่อยู่ของ Firefox ตอนอยู่แท็บแบ่งจอ:** ใช้ `userChrome/userChrome.css` วิธีติดตั้งเขียนไว้ในไฟล์
+
+**ซ่อนแถบที่อยู่ของ Firefox ตอนอยู่แท็บแบ่งจอ (ไม่บังคับ)**
+
+ถ้าไม่ทำ แท็บแบ่งจอจะมีแถบที่อยู่ 2 แถบ คือของ Firefox และของ Snap Split ไฟล์ [`userChrome/userChrome.css`](userChrome/userChrome.css) ซ่อนแถบของ Firefox **เฉพาะตอนแท็บ Snap Split เปิดอยู่** สลับไปแท็บปกติแล้วแถบจะกลับมาเอง
+
+1. เปิด `about:config` แล้วตั้ง `toolkit.legacyUserProfileCustomizations.stylesheets` เป็น `true`
+2. เปิด `about:support` ตรง *Profile Folder* กด **Open Folder**
+3. ในโฟลเดอร์นั้น สร้างโฟลเดอร์ชื่อ `chrome` (ถ้ายังไม่มี)
+4. คัดลอก `userChrome.css` ไปวางในโฟลเดอร์ `chrome` ถ้ามี `userChrome.css` อยู่แล้ว ให้คัดลอกเนื้อหาของเราไปต่อท้ายไฟล์เดิม
+5. ปิด Firefox ทุกหน้าต่าง แล้วเปิดใหม่
+
+ถอน: ลบบรรทัดที่เพิ่ม (หรือลบไฟล์) แล้วเปิด Firefox ใหม่
 
 Snap Split ไม่เก็บข้อมูลและไม่ส่งข้อมูลไปที่ไหน · สัญญาอนุญาต [MPL-2.0](LICENSE)
